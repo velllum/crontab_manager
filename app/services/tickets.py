@@ -69,7 +69,7 @@ def set_ticket_status():
                   f"кол. дней после статуса выполнено: {days_delta}, "
                   f"кол. отведенных дней до статуса закрыть: {ticket.agreement.working_days_count}"
                   )
-            ticket.status_id = status_close.id
+            # ticket.status_id = status_close.id
             # db.session.commit()
 
         else:
@@ -86,3 +86,6 @@ def set_ticket_status():
             print("= " * 25)
 
     print("*" * 25, today, "*" * 25)
+
+
+set_ticket_status()

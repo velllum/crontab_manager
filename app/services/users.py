@@ -4,40 +4,52 @@ from app import models as ms
 
 def set_file_group_user():
 
-    file_group_id = [1, 3]
+    file_id = [1, 3]
 
     for user in db.session.query(ms.MyUser).all():
 
+        print(f"<{user.lastname} {user.username} {user.patronymic}> <{user.email}>")
 
-        lst_obj_my_user = db.session.query(ms.FileGroupUser).filter_by(myuser_id=user.id).all()
+        user_files = db.session.query(ms.FileGroupUser).filter_by(myuser_id=user.id).all()
 
-        print(lst_obj_my_user[0].filegroup_id.name)
+        name_files = [get_name(f.filegroup_id) for f in user_files]
+        print(name_files)
 
-        lst_my_user_name = [f.filegroup_id for f in lst_obj_my_user]
-        print(lst_my_user_name)
-
-        if not lst_obj_my_user.name:
-            for y_id in file_group_id:
-                fu = ms.FileGroupUser
-                fu.myuser_id = user.id
-                fu.filegroup_id = y_id
-                # db.session.add(fu)
+        if not user_files:
+            for _id in file_id:
+                f = ms.FileGroupUser
+                f.myuser_id = user.id
+                f.filegroup_id = _id
+                # db.session.add(f)
                 # db.session.commit()
-                print("общий доступ и КУО", fu)
+                print("общий доступ и КУО", get_name(f.filegroup_id))
             continue
 
-        if "общий доступ" not in lst_my_user_name:
-            fu = ms.FileGroupUser
-            fu.myuser_id = user.id
-            fu.filegroup_id = file_group_id[0]
-            # db.session.add(fu)
+        if "общий доступ" not in name_files:
+            f = ms.FileGroupUser
+            f.myuser_id = user.id
+            f.filegroup_id = file_id[0]
+            # db.session.add(f)
             # db.session.commit()
-            print("общий доступ", fu)
+            print("общий доступ", f)
 
-        if "КУО" not in lst_my_user_name:
-            fu = ms.FileGroupUser
-            fu.myuser_id = user.id
-            fu.filegroup_id = file_group_id[1]
-            # db.session.add(fu)
+        if "КУО" not in name_files:
+            f = ms.FileGroupUser
+            f.myuser_id = user.id
+            f.filegroup_id = file_id[1]
+            # db.session.add(f)
             # db.session.commit()
-            print("КУО", fu)
+            print("КУО", f)
+
+        # break
+
+
+def get_name(_id):
+
+    query = db.session.query(ms.FileGroup).get(_id)
+
+    if query:
+        return query.name
+
+
+set_file_group_user()

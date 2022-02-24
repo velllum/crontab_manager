@@ -15,12 +15,14 @@ def check_data(dct):
         dct["type_id"] = None
     if dct.get("name") == "":
         dct["name"] = None
+    if dct.get("oou") == "":
+        dct["oou"] = None
     return dct
 
 
 def set_organization():
 
-    cv = open("accounts_organization_slug_linux.csv")
+    cv = open("app/services/accounts_organization_slug_linux.csv")
     dict_reade = csv.DictReader(cv)
 
     update = 0
@@ -53,7 +55,3 @@ def set_organization():
     print(f"update and create {create + update}")
 
     print(f"enumerate {enum}")
-
-
-if __name__ == "__main__":
-    set_organization()
